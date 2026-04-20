@@ -400,20 +400,39 @@ require('lazy').setup({
 
       -- [[ Configure Telescope ]]
       -- See `:help telescope` and `:help telescope.setup()`
+      local actions = require 'telescope.actions'
+      local action_state = require 'telescope.actions.state'
+
+      -- <CR> on multi-selection (marked with <Tab>) opens every marked file
+      -- as a buffer; falls back to the default single-open when nothing is marked.
+      local multi_open = function(prompt_bufnr)
+        local picker = action_state.get_current_picker(prompt_bufnr)
+        local multi = picker:get_multi_selection()
+        if vim.tbl_isempty(multi) then
+          actions.select_default(prompt_bufnr)
+          return
+        end
+        actions.close(prompt_bufnr)
+        for _, entry in ipairs(multi) do
+          local target = entry.path or entry.filename or entry.value
+          if target then
+            vim.cmd('edit ' .. vim.fn.fnameescape(target))
+          end
+        end
+      end
+
       require('telescope').setup {
-        -- You can put your default mappings / updates / etc. in here
-        --  All the info you're looking for is in `:help telescope.setup()`
-        --
-        -- defaults = {
-        --   mappings = {
-        --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-        --   },
-        -- },
+        defaults = {
+          mappings = {
+            i = { ['<CR>'] = multi_open },
+            n = { ['<CR>'] = multi_open },
+          },
+        },
         pickers = {
           buffers = {
             mappings = {
-              i = { ['<C-d>'] = require('telescope.actions').delete_buffer },
-              n = { ['<C-d>'] = require('telescope.actions').delete_buffer },
+              i = { ['<C-d>'] = actions.delete_buffer },
+              n = { ['<C-d>'] = actions.delete_buffer },
             },
           },
         },
@@ -635,13 +654,33 @@ require('lazy').setup({
         ts_ls = {},
         html = {},
         cssls = {},
-        tailwindcss = {},
-        intelephense = {},
-        laravel_ls = {
-          -- Only activate for Laravel projects
+        tailwindcss = {
+          filetypes = { 'html', 'css', 'scss', 'less', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'vue', 'svelte' },
           root_dir = function(bufnr, cb)
             local fname = vim.api.nvim_buf_get_name(bufnr)
-            cb(vim.fs.root(fname, 'artisan'))
+            cb(vim.fs.root(fname, {
+              'tailwind.config.js', 'tailwind.config.cjs', 'tailwind.config.mjs', 'tailwind.config.ts',
+              'postcss.config.js', 'postcss.config.cjs', 'postcss.config.mjs', 'postcss.config.ts',
+            }))
+          end,
+        },
+        intelephense = {
+          settings = {
+            intelephense = {
+              diagnostics = { enable = false },
+              environment = {
+                includePaths = { '_ide_helper.php', '_ide_helper_models.php' },
+              },
+            },
+          },
+        },
+        laravel_ls = {
+          -- Only activate for Laravel projects (i.e. where an `artisan` file exists upstream).
+          workspace_required = true,
+          root_dir = function(bufnr, cb)
+            local fname = vim.api.nvim_buf_get_name(bufnr)
+            local root = vim.fs.root(fname, 'artisan')
+            if root then cb(root) end
           end,
         },
         emmet_ls = {
@@ -1058,6 +1097,8 @@ require('lazy').setup({
     },
   },
 })
+
+require 'custom.filament-colors'
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

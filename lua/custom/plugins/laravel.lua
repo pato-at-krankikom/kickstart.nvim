@@ -1,5 +1,10 @@
 return {
   "adalessa/laravel.nvim",
+  enabled = true,
+  -- Only load in actual Laravel projects (where an `artisan` file exists upstream).
+  cond = function()
+    return vim.fs.root(0, 'artisan') ~= nil
+  end,
   dependencies = {
     "MunifTanjim/nui.nvim",
     "nvim-lua/plenary.nvim",
