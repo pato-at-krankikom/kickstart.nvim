@@ -289,21 +289,21 @@ require('lazy').setup({
   -- options to `gitsigns.nvim`.
   --
   -- See `:help gitsigns` to understand what the configuration keys do
-  { -- Adds git related signs to the gutter, as well as utilities for managing changes
-    'lewis6991/gitsigns.nvim',
-    ---@module 'gitsigns'
-    ---@type Gitsigns.Config
-    ---@diagnostic disable-next-line: missing-fields
-    opts = {
-      signs = {
-        add = { text = '+' }, ---@diagnostic disable-line: missing-fields
-        change = { text = '~' }, ---@diagnostic disable-line: missing-fields
-        delete = { text = '_' }, ---@diagnostic disable-line: missing-fields
-        topdelete = { text = '‾' }, ---@diagnostic disable-line: missing-fields
-        changedelete = { text = '~' }, ---@diagnostic disable-line: missing-fields
-      },
-    },
-  },
+  -- { -- Adds git related signs to the gutter, as well as utilities for managing changes
+  --   'lewis6991/gitsigns.nvim',
+  --   ---@module 'gitsigns'
+  --   ---@type Gitsigns.Config
+  --   ---@diagnostic disable-next-line: missing-fields
+  --   opts = {
+  --     signs = {
+  --       add = { text = '+' }, ---@diagnostic disable-line: missing-fields
+  --       change = { text = '~' }, ---@diagnostic disable-line: missing-fields
+  --       delete = { text = '_' }, ---@diagnostic disable-line: missing-fields
+  --       topdelete = { text = '‾' }, ---@diagnostic disable-line: missing-fields
+  --       changedelete = { text = '~' }, ---@diagnostic disable-line: missing-fields
+  --     },
+  --   },
+  -- },
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
   --
@@ -334,6 +334,7 @@ require('lazy').setup({
       spec = {
         { '<leader>s', group = '[S]earch', mode = { 'n', 'v' } },
         { '<leader>t', group = '[T]oggle' },
+        { '<leader>th', desc = 'LSP: [T]oggle Inlay [H]ints' },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
         { 'gr', group = 'LSP Actions', mode = { 'n' } },
       },
@@ -966,7 +967,10 @@ require('lazy').setup({
       -- default behavior. For example, here we set the section for
       -- cursor location to LINE:COLUMN
       ---@diagnostic disable-next-line: duplicate-set-field
-      statusline.section_location = function() return '%2l:%-2v' end
+      statusline.section_location = function()
+        local ai = vim.b.minuet_virtual_text_auto_trigger == true and '󰧑 on' or '󰧑 off'
+        return ai .. '  %2l:%-2v'
+      end
 
       -- ... and there is more!
       --  Check out: https://github.com/nvim-mini/mini.nvim
@@ -1064,7 +1068,7 @@ require('lazy').setup({
   -- require 'kickstart.plugins.lint',
   require 'kickstart.plugins.autopairs',
   require 'kickstart.plugins.neo-tree',
-  require 'kickstart.plugins.gitsigns', -- adds gitsigns recommended keymaps
+  -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommended keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.

@@ -44,8 +44,8 @@ return {
     end
 
     -- Keymaps (leader + t + h/v/f)
-    vim.keymap.set('n', '<leader>th', toggle_horizontal, { silent = true, noremap = true })
-    vim.keymap.set('n', '<leader>tv', toggle_vertical, { silent = true, noremap = true })
-    vim.keymap.set('n', '<leader>tf', toggle_float, { silent = true, noremap = true })
+    vim.keymap.set('n', '<leader>tH', toggle_horizontal, { silent = true, noremap = true, desc = '[T]oggle [H]orizontal terminal' })
+    vim.keymap.set('n', '<leader>tV', toggle_vertical, { silent = true, noremap = true, desc = '[T]oggle [V]ertical terminal' })
+    vim.keymap.set('n', '<leader>tf', toggle_float, { silent = true, noremap = true, desc = '[T]oggle [F]loating terminal' })
   end,
 }
