@@ -10,18 +10,19 @@ return {
       provider = 'openai_fim_compatible',
       n_completions = 1,
       context_window = 8192,
-      throttle = 1500,
-      debounce = 400,
+      throttle = 2000,
+      debounce = 500,
       provider_options = {
         openai_fim_compatible = {
           api_key = 'TERM',
           name = 'Ollama',
           end_point = 'http://localhost:11434/v1/completions',
-          model = 'qwen2.5-coder:3b',
+          model = 'deepseek-coder-v2:16b-lite-instruct-q4_K_M',
           optional = {
             max_tokens = 128,
             top_p = 0.9,
-            stop = { '\n\n' },
+            temperature = 0.2,
+            stop = { '\n\n', '<|EOT|>', '<|end▁of▁sentence|>' },
           },
         },
       },
