@@ -908,6 +908,21 @@ require('lazy').setup({
         styles = {
           comments = { italic = false }, -- Disable italics in comments
         },
+        -- Darken floating windows (LSP signature/hover, blink.cmp menu & docs)
+        -- so they stand out from the code background instead of blending in.
+        on_highlights = function(hl, c)
+          local float_bg = '#16161e' -- clearly darker than the moon bg (#222436)
+          hl.NormalFloat = { bg = float_bg }
+          hl.FloatBorder = { bg = float_bg, fg = c.blue0 }
+          hl.LspSignatureActiveParameter = { bg = c.bg_highlight, bold = true }
+          -- blink.cmp windows
+          hl.BlinkCmpMenu = { bg = float_bg }
+          hl.BlinkCmpMenuBorder = { bg = float_bg, fg = c.blue0 }
+          hl.BlinkCmpDoc = { bg = float_bg }
+          hl.BlinkCmpDocBorder = { bg = float_bg, fg = c.blue0 }
+          hl.BlinkCmpSignatureHelp = { bg = float_bg }
+          hl.BlinkCmpSignatureHelpBorder = { bg = float_bg, fg = c.blue0 }
+        end,
       }
 
       -- Load the colorscheme here.
