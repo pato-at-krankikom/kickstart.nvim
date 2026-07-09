@@ -416,9 +416,7 @@ require('lazy').setup({
         actions.close(prompt_bufnr)
         for _, entry in ipairs(multi) do
           local target = entry.path or entry.filename or entry.value
-          if target then
-            vim.cmd('edit ' .. vim.fn.fnameescape(target))
-          end
+          if target then vim.cmd('edit ' .. vim.fn.fnameescape(target)) end
         end
       end
 
@@ -435,6 +433,9 @@ require('lazy').setup({
               i = { ['<C-d>'] = actions.delete_buffer },
               n = { ['<C-d>'] = actions.delete_buffer },
             },
+          },
+          colorscheme = {
+            enable_preview = true,
           },
         },
         extensions = {
@@ -660,8 +661,14 @@ require('lazy').setup({
           root_dir = function(bufnr, cb)
             local fname = vim.api.nvim_buf_get_name(bufnr)
             cb(vim.fs.root(fname, {
-              'tailwind.config.js', 'tailwind.config.cjs', 'tailwind.config.mjs', 'tailwind.config.ts',
-              'postcss.config.js', 'postcss.config.cjs', 'postcss.config.mjs', 'postcss.config.ts',
+              'tailwind.config.js',
+              'tailwind.config.cjs',
+              'tailwind.config.mjs',
+              'tailwind.config.ts',
+              'postcss.config.js',
+              'postcss.config.cjs',
+              'postcss.config.mjs',
+              'postcss.config.ts',
             }))
           end,
         },
@@ -906,7 +913,7 @@ require('lazy').setup({
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-night'
+      vim.cmd.colorscheme 'tokyonight-moon'
     end,
   },
 
@@ -944,7 +951,7 @@ require('lazy').setup({
       -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
       -- - sd'   - [S]urround [D]elete [']quotes
       -- - sr)'  - [S]urround [R]eplace [)] [']
-      require('mini.surround').setup({
+      require('mini.surround').setup {
         mappings = {
           add = 'gza',
           delete = 'gzd',
@@ -954,7 +961,7 @@ require('lazy').setup({
           highlight = 'gzh',
           update_n_lines = 'gzn',
         },
-      })
+      }
 
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
@@ -1103,6 +1110,7 @@ require('lazy').setup({
 })
 
 require 'custom.filament-colors'
+require 'custom.copypath'
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
