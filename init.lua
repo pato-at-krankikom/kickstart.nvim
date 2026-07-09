@@ -1064,10 +1064,10 @@ require('lazy').setup({
           -- enables syntax highlighting and other treesitter features
           vim.treesitter.start(buf, language)
 
-          -- enables treesitter based folds
-          -- for more info on folds see `:help folds`
-          vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
-          vim.wo.foldmethod = 'expr'
+          -- Folding is managed by nvim-ufo (see lua/custom/plugins/ufo.lua)
+          -- -- enables treesitter based folds
+          -- vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+          -- vim.wo.foldmethod = 'expr'
 
           -- enables treesitter based indentation
           vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
@@ -1087,7 +1087,7 @@ require('lazy').setup({
   --
   require 'kickstart.plugins.debug',
   require 'kickstart.plugins.indent_line',
-  -- require 'kickstart.plugins.lint',
+  require 'kickstart.plugins.lint',
   require 'kickstart.plugins.autopairs',
   -- require 'kickstart.plugins.neo-tree',
   -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommended keymaps
